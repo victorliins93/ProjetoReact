@@ -1,10 +1,12 @@
 import React from 'react'
 import { Container, Header, Card, Button, Segment } from 'semantic-ui-react'
+import Navegacao from './Navegacao'
 
 const Inicio = props => {
 
     return (
         <div>
+            <Navegacao/>
             <Container>
                 <Segment piled>
                     Quiz
