@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, Dropdown } from 'semantic-ui-react';
+import configauth, { auth, providers } from './../configauth'
+import autentica from './Inicio'
+
 
 const Navegacao = props => {
     return (
@@ -11,8 +14,8 @@ const Navegacao = props => {
                 <Menu.Menu position='right'>
                     <Dropdown item text='Acesse aqui'>
                         <Dropdown.Menu>
-                            <Dropdown.Item as={Link}>Facebook</Dropdown.Item>
-                            <Dropdown.Item as={Link}>Twitter</Dropdown.Item>
+                            <Dropdown.Item as={Link} onClick={() => this.autentica('facebook')}>Facebook</Dropdown.Item>
+                            <Dropdown.Item as={Link} onClick={() => this.autentica('google')}>Google</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Menu>
