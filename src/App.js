@@ -15,7 +15,7 @@ function App() {
       <div className="App">
         <Route exact path='/' component={Inicio} />
         <Route path='/categorias' component={Catergorias} />
-        <Route path='/perguntas' component={Perguntas} />
+        <Route path='/perguntas/:idCat' component={Perguntas}/>
         <Route path='/resultado' component={Resultado} />
         <Route path='/ranking' component={Ranking} />
       </div>

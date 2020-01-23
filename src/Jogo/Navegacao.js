@@ -4,26 +4,29 @@ import { Menu, Dropdown, Image, Icon } from 'semantic-ui-react';
 import Firebase from 'firebase'
 
 class Navegacao extends Component {
+   
     constructor(props) {
         super(props);
 
-        this.state = {
-            usuario: '',
-            estaLogado: false
-
-        }
-
+            this.state = {
+                usuario: '',
+                estaLogado: !!Firebase.auth().currentUser
+            }
     }
 
     componentDidMount() {
-        const usuarioLogado = {
-            nome: localStorage.getItem('nome'),
-            foto: localStorage.getItem('foto')
+        const usuarioAtual = Firebase.auth().currentUser
+        if(usuarioAtual !== null){
+            const usuarioLogado = {
+                nome: usuarioAtual.displayName,
+                foto: usuarioAtual.photoURL
+            }
+            this.setState({
+                usuario: usuarioLogado,
+                estaLogado: true
+            })
         }
-        this.setState({
-            usuario: usuarioLogado,
-            estaLogado: !!localStorage.getItem('nome')
-        })
+   
     }
 
     deslogarUsuario() {
@@ -31,8 +34,6 @@ class Navegacao extends Component {
             .auth()
             .signOut()
             .then(() => {
-                localStorage.removeItem('nome')
-                localStorage.removeItem('foto')
                 this.setState({
                     usuario: '',
                     estaLogado: false
@@ -51,10 +52,8 @@ class Navegacao extends Component {
             <div>
                 <Menu>
 
-                    <Menu.Item as={Link} to='/'>HOME</Menu.Item>
+                    <Menu.Item><strong>QUIZ</strong></Menu.Item>
                     <Menu.Item as={Link} to='/categorias'>Categorias</Menu.Item>
-                    <Menu.Item as={Link} to='/perguntas'>Perguntas</Menu.Item>
-                    <Menu.Item as={Link} to='/resultado'>Resultado</Menu.Item>
                     <Menu.Item as={Link} to='/ranking'>Ranking</Menu.Item>
                     <Menu.Menu position='right'>
 
@@ -66,10 +65,10 @@ class Navegacao extends Component {
                             </span>
                         }
                         {
-                            this.state.estaLogado &&
+                            this.state.estaLogado && 
                             <Dropdown item text={nome}>
                             <Dropdown.Menu>
-                                <Dropdown.Item onClick={(this.deslogarUsuario)}>Sair</Dropdown.Item>
+                                <Dropdown.Item exact as={Link} to='/' onClick={(this.deslogarUsuario)}>Sair</Dropdown.Item>                                
                             </Dropdown.Menu>
                         </Dropdown>
                         }

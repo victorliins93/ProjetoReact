@@ -14,8 +14,8 @@ const Navegacao = props => {
                 <Menu.Menu position='right'>
                     <Dropdown item text='Acesse aqui'>
                         <Dropdown.Menu>
-                            <Dropdown.Item as={Link} onClick={() => this.autentica('facebook')}>Facebook</Dropdown.Item>
-                            <Dropdown.Item as={Link} onClick={() => this.autentica('google')}>Google</Dropdown.Item>
+                            <Dropdown.Item >Facebook</Dropdown.Item>
+                            <Dropdown.Item >Google</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Menu>

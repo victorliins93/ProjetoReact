@@ -18,8 +18,6 @@ class Inicio extends Component {
                     usuario,
                     estalogado: true
                 })
-                localStorage.setItem('nome', usuario.displayName)
-                localStorage.setItem('foto', usuario.photoURL)
             } else {
                 this.setState({ estalogado: false })
             }
