@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Container, Header, Card, Button, Segment, Image } from 'semantic-ui-react'
+import { Container, Header, Card, Button, Segment } from 'semantic-ui-react'
 import Navegacao from './Navegacao'
-import configauth, { auth, providers } from './../configauth'
+import { auth, providers } from './../configauth'
 import { Redirect } from 'react-router-dom'
 
 class Inicio extends Component {

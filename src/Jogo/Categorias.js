@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Segment, Grid, Icon} from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import {Grid} from 'semantic-ui-react'
 import config from './../configauth'
 
 import Categoria from './Categoria'
@@ -14,12 +13,13 @@ class Categorias extends Component {
             categorias:{}
         }
 
-        config.syncState('perguntas',{
+        config.syncState('categorias',{
             context: this,
-            state: 'perguntas',
+            state: 'categorias',
             asArray: false
         })
     }
+    
     render() {
         return (
             <div>
@@ -33,8 +33,7 @@ class Categorias extends Component {
                         {      
                          Object.keys(this.state.categorias).map(key=>{
                              return (<Categoria key={key} titulo = {this.state.categorias[key].titulo} icone={this.state.categorias[key].icone}/>)
-                         }
-                            )
+                         })
                         }
 
                 </Grid>

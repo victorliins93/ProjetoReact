@@ -1,8 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Menu, Dropdown } from 'semantic-ui-react';
-import configauth, { auth, providers } from './../configauth'
-import autentica from './Inicio'
 
 
 const Navegacao = props => {

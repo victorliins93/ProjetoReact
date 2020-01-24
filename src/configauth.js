@@ -16,8 +16,8 @@ const db = firebase.database(firebase)
 const configauth = Rebase.createClass(db)
 
 export const providers ={
-    'facebook': new firebase.auth.FacebookAuthProvider,
-    'google': new firebase.auth.GoogleAuthProvider
+    'facebook': new firebase.auth.FacebookAuthProvider(),
+    'google': new firebase.auth.GoogleAuthProvider()
 }
 
 export const auth = firebaseConfig.auth()

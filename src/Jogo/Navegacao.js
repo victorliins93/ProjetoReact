@@ -68,7 +68,7 @@ class Navegacao extends Component {
                             this.state.estaLogado && 
                             <Dropdown item text={nome}>
                             <Dropdown.Menu>
-                                <Dropdown.Item exact as={Link} to='/' onClick={(this.deslogarUsuario)}>Sair</Dropdown.Item>                                
+                                <Dropdown.Item as={Link} to='/' onClick={(this.deslogarUsuario)}>Sair</Dropdown.Item>                                
                             </Dropdown.Menu>
                         </Dropdown>
                         }
