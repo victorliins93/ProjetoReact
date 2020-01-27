@@ -3,6 +3,7 @@ import { Grid, Radio, Message, Icon, Progress, Button} from 'semantic-ui-react'
 import Navegacao from './Navegacao'
 import axios from 'axios'
 import _ from 'lodash'
+import {Redirect} from 'react-router-dom'
 
 class Perguntas extends Component {
     constructor(props){
@@ -12,10 +13,16 @@ class Perguntas extends Component {
             perguntas:{},
             estaCarregando: false,
             perguntaAtual:0,
-            totalPerguntas:0
+            totalPerguntas:0,
+            resposta: {},
+            pontos: 0,
+            name:{},
+            resultado: [],
+            finalizado: false
 
         }
         this.proximaPergunta = this.proximaPergunta.bind(this)
+        this.onRadioChange = this.onRadioChange.bind(this)
     }
 
     componentDidMount(){
@@ -53,8 +60,29 @@ class Perguntas extends Component {
                 perguntaAtual: this.state.perguntaAtual+1
             })
         } else {
-            console.log('Terminou as perguntas.')
+            this.state.pontos && console.log('Pontuação:', this.state.pontos)
+            this.setState({finalizado:true})
+
         }
+        const respostaJogador = this.state.resposta
+        const respostaCorreta = _.filter(this.state.perguntas.perguntas[this.state.name].alternativas, {'status': true})[0].resposta
+        
+        if(respostaCorreta === respostaJogador){
+            this.setState({pontos: this.state.pontos+1})
+         }
+         const acertou = (respostaCorreta === respostaJogador)
+         const res = {
+             tituloPergunta: this.state.perguntas.perguntas[this.state.name].pergunta,
+             resposta: this.state.resposta,
+             acertou
+ 
+         }
+         this.setState({resultado: [...this.state.resultado, res]})
+    }
+
+    onRadioChange = (e, {resposta, name}) =>{
+        this.setState({resposta})
+        this.setState({name})
 
     }
 
@@ -66,28 +94,52 @@ class Perguntas extends Component {
             <Grid.Row>
                 <Grid.Column>
                     <Message color='yellow'>
-                        <p>{pergunta.alternativas[id].resposta}</p>
-                        <Radio toggle name={id} />
+                        <p>{pergunta.alternativas[1].resposta}</p>
+                        <Radio 
+                        toggle 
+                        name={id}
+                        resposta = {pergunta.alternativas[1].resposta} 
+                        checked= {this.state.resposta === pergunta.alternativas[1].resposta}                    
+                        onChange={this.onRadioChange}
+                         />
                     </Message>
                 </Grid.Column>
                 <Grid.Column>
                     <Message color='red'>
-                    <p>{pergunta.alternativas[id].resposta}</p>
-                        <Radio toggle name={id} />
+                    <p>{pergunta.alternativas[2].resposta}</p>
+                        <Radio 
+                        toggle 
+                        name={id}
+                        resposta = {pergunta.alternativas[2].resposta}  
+                        checked= {this.state.resposta === pergunta.alternativas[2].resposta}   
+                        onChange={this.onRadioChange}
+                         />
                     </Message>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column>
                     <Message color='violet'>
-                        <p>{pergunta.alternativas[id].resposta}</p>
-                        <Radio toggle name={id} />
+                        <p>{pergunta.alternativas[3].resposta}</p>
+                        <Radio 
+                        toggle 
+                        name={id}
+                        resposta = {pergunta.alternativas[3].resposta}  
+                        checked= {this.state.resposta === pergunta.alternativas[3].resposta}                       
+                        onChange={this.onRadioChange}
+                         />
                     </Message>
                 </Grid.Column>
                 <Grid.Column>
                     <Message color='teal'>
-                    <p>{pergunta.alternativas[id].resposta}</p>
-                        <Radio toggle name={id} />
+                    <p>{pergunta.alternativas[4].resposta}</p>
+                        <Radio 
+                        toggle 
+                        name={id}
+                        resposta = {pergunta.alternativas[4].resposta}  
+                        checked= {this.state.resposta === pergunta.alternativas[4].resposta}                       
+                        onChange={this.onRadioChange}
+                         />
                     </Message>
                 </Grid.Column>
             </Grid.Row>
@@ -100,6 +152,17 @@ class Perguntas extends Component {
         let item =[]
         if(this.state.estaCarregando){
             return <p>Carregando...</p>
+        }
+        if(this.state.finalizado){
+            return <Redirect to={
+                {
+                    pathname: '/resultado',
+                    state: {
+                        resultado: this.state.resultado,
+                        pontos: this.state.pontos
+                    }
+                }
+            }/>
         }
         return (
             <div>
