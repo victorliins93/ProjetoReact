@@ -12,8 +12,9 @@ var firebaseConfig = firebase.initializeApp({
     appId: "1:71118757200:web:fe2643c7b3a70efabba055",
     measurementId: "G-BPPSD62QSW"
 });
-const db = firebase.database(firebase)
+export const db = firebase.database(firebase)
 const configauth = Rebase.createClass(db)
+//var admin = require("firebase-admin")
 
 export const providers ={
     'facebook': new firebase.auth.FacebookAuthProvider(),

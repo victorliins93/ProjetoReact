@@ -4,6 +4,8 @@ import Navegacao from './Navegacao'
 import axios from 'axios'
 import _ from 'lodash'
 import {Redirect} from 'react-router-dom'
+import Firebase from 'firebase'
+import { db } from '../configauth'
 
 class Perguntas extends Component {
     constructor(props){
@@ -18,7 +20,9 @@ class Perguntas extends Component {
             pontos: 0,
             name:{},
             resultado: [],
-            finalizado: false
+            finalizado: false,
+            usuarioEfetivo:[],
+            estadoPergunta: false
 
         }
         this.proximaPergunta = this.proximaPergunta.bind(this)
@@ -43,8 +47,8 @@ class Perguntas extends Component {
                const chave = Object.keys(dados.data)[0]    
                console.log(dados.data[chave])
                this.setState({
-                   estaCarregando: false,
-                   perguntas: dados.data[chave],
+                    estaCarregando: false,
+                    perguntas: dados.data[chave],
                     totalPerguntas: _.size(dados.data[chave])
                })
             })
@@ -53,16 +57,33 @@ class Perguntas extends Component {
             })
     }
 
+    insereUsuario(){
+        console.log("Inserindo usuário.");
+        const usuarioAtual = Firebase.auth().currentUser
+        const user = {
+            nome: usuarioAtual.displayName,
+            foto: usuarioAtual.photoURL,
+            pontos: this.state.pontos,
+            categoria: this.props.match.params.idCat,
+            icone:this.state.perguntas.icone
+        }
+        db.ref("users").push(user);
+    }
+
     proximaPergunta(){
         const {perguntaAtual, totalPerguntas} = this.state
         if(perguntaAtual<totalPerguntas-1){
             this.setState({
-                perguntaAtual: this.state.perguntaAtual+1
+                perguntaAtual: this.state.perguntaAtual+1,
+                estadoPergunta:false
             })
+            console.log("Estado da pergunta", this.state.estadoPergunta)
         } else {
-            this.state.pontos && console.log('Pontuação:', this.state.pontos)
-            this.setState({finalizado:true})
-
+            
+            this.setState({finalizado:true}, () => {
+            this.insereUsuario();
+            });
+            
         }
         const respostaJogador = this.state.resposta
         const respostaCorreta = _.filter(this.state.perguntas.perguntas[this.state.name].alternativas, {'status': true})[0].resposta
@@ -83,7 +104,9 @@ class Perguntas extends Component {
     onRadioChange = (e, {resposta, name}) =>{
         this.setState({resposta})
         this.setState({name})
-
+        this.setState({
+            estadoPergunta:true
+        })
     }
 
     renderPergunta(pergunta, id){
@@ -179,8 +202,16 @@ class Perguntas extends Component {
             {
                 this.state.perguntas.perguntas && this.renderPergunta(this.state.perguntas.perguntas[item[this.state.perguntaAtual]], item[this.state.perguntaAtual])
             }
-            <Progress value={this.state.perguntaAtual+1} total={item.length} progress='ratio'/>
+            <br></br><Progress value={this.state.perguntaAtual+1} total={item.length} progress='ratio'/>
+            
+            {
+                this.state.estadoPergunta && !(this.state.perguntaAtual===this.state.totalPerguntas-1) &&
             <Button onClick={this.proximaPergunta}>Proximo</Button>
+            }
+                {
+                this.state.estadoPergunta && (this.state.perguntaAtual===this.state.totalPerguntas-1) &&
+                    <Button onClick={this.proximaPergunta}>Finalizar</Button>
+                }
             </div>
         )
     }

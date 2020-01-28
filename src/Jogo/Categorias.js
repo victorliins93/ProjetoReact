@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Grid} from 'semantic-ui-react'
 import config from './../configauth'
-
+import _ from 'lodash'
 import Categoria from './Categoria'
 import Navegacao from './Navegacao'
 
@@ -21,10 +21,11 @@ class Categorias extends Component {
     }
     
     render() {
+        const test = _.orderBy(this.state.categorias, ['titulo'], ['asc']);
         return (
             <div>
                 <header className="App-header">
-                    <Navegacao />
+                    <Navegacao array={test}/>
                 </header>
                 <h2>Lista categorias</h2>
                 <p>Selecione a categoria que deseja jogar.</p>
@@ -35,7 +36,7 @@ class Categorias extends Component {
                              return (<Categoria key={key} titulo = {this.state.categorias[key].titulo} icone={this.state.categorias[key].icone}/>)
                          })
                         }
-
+                
                 </Grid>
             </div>
         )

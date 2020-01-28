@@ -42,7 +42,6 @@ class Navegacao extends Component {
 
             .catch(err => {
                 console.log('Erro ao deslogar usuario.')
-
             })
     }
 
