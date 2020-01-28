@@ -8,8 +8,9 @@ const Usuario = ({foto, nome, pontos, icone, categoria}) => {
                 <Image avatar src={foto} />
                 {nome}
              </List.Content>   
-             <List.Content>{categoria}<Icon name={icone}/></List.Content>
-             <List.Content floated='right'><Label color='blue'>SCORE: {pontos}</Label></List.Content>
+             <List.Content floated='right'><Label color='grey'>Categoria:  {categoria} <Icon name={icone}/> </Label>
+             <Label color='blue'> Pontuação:  {pontos}</Label>
+             </List.Content>
         </List.Item>
     )
 }
